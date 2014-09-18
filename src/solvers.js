@@ -61,28 +61,19 @@ window.countNRooksSolutions = function(n) {
 
    console.log("board = " + board);
    var recurse = function(nCount, solutionSoFar) {
-   //check to see there are any duplicates
-    //if so, that means you need to go back
-     console.log("nCount = " + nCount);
      for(var i = 0; i < solutionSoFar.length; i++){
-      console.log("solutionsofar = " + solutionSoFar);
        if(solutionSoFar.indexOf(solutionSoFar[i]) !== i){
-        console.log(solutionSoFar.indexOf(solutionSoFar[i]));
-        console.log("i = " + i);
-        console.log("this check is being a nazi");
         return;
        }
      }
 
      if( nCount === 0 ){
-       console.log("solution count++");
        solutionCount++;
        return;
      }
 
      for( var i = 0; i < board.length; i++ ){
        var currentSolution = board[i];
-       console.log(currentSolution);
        recurse( nCount-1, solutionSoFar.concat(currentSolution) );
      }
    };
@@ -104,8 +95,46 @@ window.findNQueensSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+   var solutionCount = 0;
+   var board = [];
+   console.log("N = " + n);
+   var solutions = [];
 
+   for (var i = 0; i < n; i++){
+     board.push(i);
+   }
+
+   var recurse = function(nCount, solutionSoFar) {
+     for(var i = 0; i < solutionSoFar.length; i++){
+       if(solutionSoFar.indexOf(solutionSoFar[i]) !== i){
+        return;
+       }
+
+
+       var checkVariable = Math.abs(solutionSoFar[solutionSoFar.length-1] - solutionSoFar[i]);
+       if( checkVariable !== 0 ){
+       // debugger;
+         var checkIndex = solutionSoFar.length-1-i;
+         if (checkVariable === checkIndex) {
+          return;
+        }
+      }
+     }
+
+     if( nCount === 0 ){
+       console.log(solutionSoFar);
+       solutionCount++;
+       return;
+     }
+
+     for( var i = 0; i < board.length; i++ ){
+       var currentSolution = board[i];
+       recurse( nCount-1, solutionSoFar.concat(currentSolution) );
+     }
+   };
+   recurse( n, [] );
+
+   return solutionCount;
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
