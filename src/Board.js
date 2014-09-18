@@ -133,7 +133,37 @@
       return false; // fixme
     },
 
+    //Helper functions
 
+    negateCol: function(colIndex) {
+    for (var i = 0; i < this.rows().length; i++){
+        this.rows()[i][colIndex] = -1;
+      }
+    },
+
+    negateRow: function(rowIndex) {
+      for (var i = 0; i < this.rows()[rowIndex].length; i++){
+        this.rows()[rowIndex][i] = -1;
+      }
+    },
+
+    // [-1, -1, -1]
+    // [-1,  0,  0]
+    // [-1,  0   0]
+
+    // [x,y]
+    //Only our helper board is calling this method
+    findNextSpot: function(board){
+      //go through board, find the next non -1
+      for(var i = 0; i < this.rows().length; i++){
+        for(var j = 0; j < this.rows().length; j++){
+          if(this.rows()[i][j] === 0){
+            return [i, j];
+          }
+        }
+      }
+      return false;
+    },
 
     // Major Diagonals - go from top-left to bottom-right
     // --------------------------------------------------------------
