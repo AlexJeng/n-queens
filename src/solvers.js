@@ -49,24 +49,45 @@ window.findNRooksSolution = function(n) {
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
 
+  // if (n===6) {debugger;}
    var solutionCount = 0;
-   var board = new Board({n:n});
+   var board = [];
 
-  for(var i = 0; i < board.rows().length; i++){
+   var solutions = [];
 
-   var recurse = function(){  // maybe not?
-   var counter = 0;
-      for(var j = 0; j < n; j++){
-      //check for conflict
-      //no conflict?
-      //  place piece, counter ++
-      //if no conflicts
-      // increase solution count
-      //recurse
-    }
+   for (var i = 0; i < n; i++){
+     board.push(i);
    }
 
-   recurse();
+   console.log("board = " + board);
+   var recurse = function(nCount, solutionSoFar) {
+   //check to see there are any duplicates
+    //if so, that means you need to go back
+     console.log("nCount = " + nCount);
+     for(var i = 0; i < solutionSoFar.length; i++){
+      console.log("solutionsofar = " + solutionSoFar);
+       if(solutionSoFar.indexOf(solutionSoFar[i]) !== i){
+        console.log(solutionSoFar.indexOf(solutionSoFar[i]));
+        console.log("i = " + i);
+        console.log("this check is being a nazi");
+        return;
+       }
+     }
+
+     if( nCount === 0 ){
+       console.log("solution count++");
+       solutionCount++;
+       return;
+     }
+
+     for( var i = 0; i < board.length; i++ ){
+       var currentSolution = board[i];
+       console.log(currentSolution);
+       recurse( nCount-1, solutionSoFar.concat(currentSolution) );
+     }
+   };
+   recurse( n, [] );
+
    return solutionCount;
 };
 
