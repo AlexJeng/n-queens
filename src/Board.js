@@ -128,41 +128,9 @@
       for (var j = 0; j < this.rows().length; j++){
         if (this.hasColConflictAt(j)) {
           return true;
-      }
-    }
-      return false; // fixme
-    },
-
-    //Helper functions
-
-    negateCol: function(colIndex) {
-    for (var i = 0; i < this.rows().length; i++){
-        this.rows()[i][colIndex] = -1;
-      }
-    },
-
-    negateRow: function(rowIndex) {
-      for (var i = 0; i < this.rows()[rowIndex].length; i++){
-        this.rows()[rowIndex][i] = -1;
-      }
-    },
-
-    // [-1, -1, -1]
-    // [-1,  0,  0]
-    // [-1,  0   0]
-
-    // [x,y]
-    //Only our helper board is calling this method
-    findNextSpot: function(board){
-      //go through board, find the next non -1
-      for(var i = 0; i < this.rows().length; i++){
-        for(var j = 0; j < this.rows().length; j++){
-          if(this.rows()[i][j] === 0){
-            return [i, j];
-          }
         }
       }
-      return false;
+      return false; // fixme
     },
 
     // Major Diagonals - go from top-left to bottom-right
@@ -170,22 +138,19 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-    var counter = 0;
-    var negativeRows = (this.rows().length * -1) + 1;
-    for (var i = negativeRows; i < this.rows().length; i++) {
-      if (i>=0) {
-        if (this.rows()[i][majorDiagonalColumnIndexAtFirstRow+i] === 1) {
-          counter++;
-          if (counter > 1) {
-            return true;
-          }
-          if ((majorDiagonalColumnIndexAtFirstRow+i+1) > this.rows().length){
-            break;
+      var counter = 0;
+      var negativeRows = (this.rows().length * -1) + 1;
+      for (var i = negativeRows; i < this.rows().length; i++) {
+        if (this._isInBounds(i, majorDiagonalColumnIndexAtFirstRow)) {
+          if (this.rows()[i][majorDiagonalColumnIndexAtFirstRow+i] === 1) {
+            counter++;
+            if (counter > 1) {
+              return true;
+            }
           }
         }
       }
-    }
-     return false; // fixme
+      return false; // fixme
     },
 
     // test if any major diagonals on this board contain conflicts
@@ -193,30 +158,27 @@
       for (var j = 0; j < this.rows().length; j++){
         if (this.hasMajorDiagonalConflictAt(j)) {
           return true;
+        }
       }
-    }
       return false; // fixme
     },
-
-
 
     // Minor Diagonals - go from top-right to bottom-left
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-    var counter = 0;
-    //var PositiveRows = (this.rows().length + this.rows().length-1);
-    for (var i = 0; i < this.rows().length; i++) {
-      if (minorDiagonalColumnIndexAtFirstRow -i >= 0)
-        if (this.rows()[i][minorDiagonalColumnIndexAtFirstRow -i] === 1) {
-          counter++;
-          if (counter > 1) {
-            return true;
+      var counter = 0;
+      for (var i = 0; i < this.rows().length; i++) {
+        if (this._isInBounds(i, minorDiagonalColumnIndexAtFirstRow))
+          if (this.rows()[i][minorDiagonalColumnIndexAtFirstRow -i] === 1) {
+            counter++;
+            if (counter > 1) {
+              return true;
+            }
           }
         }
-      }
-     return false; // fixme
+      return false; // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
@@ -230,9 +192,7 @@
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
-
-
-  });
+});
 
   var makeEmptyMatrix = function(n) {
     return _(_.range(n)).map(function() {
